@@ -27,7 +27,9 @@ public class TdsqlTargetConfig {
 
     /** MySQL 默认 3306，PG 默认 5432 */
     public int getPort() {
-        if (port > 0) return port;
+        if (port > 0) {
+            return port;
+        }
         return "tdsql_pg".equalsIgnoreCase(targetType) ? 5432 : 3306;
     }
 

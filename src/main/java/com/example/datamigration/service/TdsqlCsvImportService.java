@@ -94,7 +94,9 @@ public class TdsqlCsvImportService {
             String line;
             try {
                 while ((line = reader.readLine()) != null) {
-                    if (line.isBlank()) continue;
+                    if (line.isBlank()) {
+                        continue;
+                    }
                     List<String> values = parseCsvLine(line);
                     for (int i = 0; i < columns.size(); i++) {
                         String v = i < values.size() ? values.get(i) : "";
@@ -160,4 +162,5 @@ public class TdsqlCsvImportService {
         private final long rowCount;
         private final String errorMessage;
     }
+}
 

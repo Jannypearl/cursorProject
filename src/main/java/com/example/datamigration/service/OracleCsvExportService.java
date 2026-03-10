@@ -99,7 +99,9 @@ public class OracleCsvExportService {
 
     private String quoteIdentifier(Connection conn, String name) throws SQLException {
         String quote = conn.getMetaData().getIdentifierQuoteString();
-        if (quote == null || quote.isEmpty()) quote = "\"";
+        if (quote == null || quote.isEmpty()) {
+            quote = "\"";
+        }
         return quote + name + quote;
     }
 
@@ -108,14 +110,22 @@ public class OracleCsvExportService {
     }
 
     private String valueToString(Object v) {
-        if (v == null) return "";
-        if (v instanceof Timestamp ts) return ts.toString();
-        if (v instanceof Date d) return d.toString();
+        if (v == null) {
+            return "";
+        }
+        if (v instanceof Timestamp ts) {
+            return ts.toString();
+        }
+        if (v instanceof Date d) {
+            return d.toString();
+        }
         return v.toString();
     }
 
     private String escapeCsv(String s) {
-        if (s == null) return "";
+        if (s == null) {
+            return "";
+        }
         if (s.contains(",") || s.contains("\"") || s.contains("\n") || s.contains("\r")) {
             return "\"" + s.replace("\"", "\"\"") + "\"";
         }
