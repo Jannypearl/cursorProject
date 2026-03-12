@@ -2,6 +2,7 @@ package com.example.datamigration.dto;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.util.List;
@@ -14,10 +15,12 @@ public class MigrationRequest {
 
     /** 源库配置：oracle/mysql/postgresql */
     @Valid
+    @NotNull(message = "源库配置不能为空")
     private SourceConfig source;
 
     /** 目标库 TDSQL 配置 */
     @Valid
+    @NotNull(message = "目标库配置不能为空")
     private TdsqlTargetConfig target;
 
     /** 要迁移的表名列表 */

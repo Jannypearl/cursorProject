@@ -34,10 +34,15 @@ public class MigrationOrchestrationService {
     @Transactional
     public MigrationJob createJob(MigrationRequest request) {
         String jobName = request.getJobName() != null ? request.getJobName() : "migration-" + System.currentTimeMillis();
+        SourceConfig source = request.getSource();
         TdsqlTargetConfig target = request.getTarget();
+        String sourceType = source.getSourceType();
+        if (sourceType == null || sourceType.isBlank()) {
+            throw new IllegalArgumentException("source.sourceType 不能为空");
+        }
         MigrationJob job = MigrationJob.builder()
                 .name(jobName)
-                .sourceType("oracle")
+                .sourceType(sourceType.toLowerCase())
                 .targetType(target.getTargetType())
                 .tableNames(String.join(",", request.getTableNames()))
                 .status("PENDING")
