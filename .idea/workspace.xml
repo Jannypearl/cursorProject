@@ -4,10 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7bf24651-0669-4523-9740-4dc87f8ceae7" name="Changes" comment="修复if语句没有大括号的问题">
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.yml" afterDir="false" />
-    </list>
+    <list default="true" id="7bf24651-0669-4523-9740-4dc87f8ceae7" name="Changes" comment="修复if语句没有大括号的问题" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -59,7 +56,8 @@
       <option name="presentableId" value="Default" />
       <updated>1773111796897</updated>
       <workItem from="1773111798708" duration="895000" />
-      <workItem from="1773112722619" duration="870000" />
+      <workItem from="1773112722619" duration="2204000" />
+      <workItem from="1773194593073" duration="597000" />
     </task>
     <task id="LOCAL-00001" summary="修复if语句没有大括号的问题">
       <created>1773112773864</created>

@@ -12,9 +12,9 @@ public class MigrationRequest {
     /** 任务名称 */
     private String jobName;
 
-    /** 源库 Oracle 配置 */
+    /** 源库配置：oracle/mysql/postgresql */
     @Valid
-    private OracleSourceConfig source;
+    private SourceConfig source;
 
     /** 目标库 TDSQL 配置 */
     @Valid

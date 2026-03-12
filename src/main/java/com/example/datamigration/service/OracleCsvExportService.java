@@ -1,7 +1,7 @@
 package com.example.datamigration.service;
 
-import com.example.datamigration.dto.OracleSourceConfig;
 import com.example.datamigration.config.DataSourceConfig;
+import com.example.datamigration.dto.SourceConfig;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * 从 Oracle 导出表数据到 CSV 文件。
+ * 从源库（Oracle/MySQL/PostgreSQL）导出表数据到 CSV 文件。
  */
 @Slf4j
 @Service
@@ -32,16 +32,13 @@ public class OracleCsvExportService {
     /**
      * 导出多张表到指定目录，返回每张表对应的 CSV 路径及行数。
      */
-    public List<ExportResult> exportToCsv(OracleSourceConfig sourceConfig, List<String> tableNames, String jobId) throws Exception {
+    public List<ExportResult> exportToCsv(SourceConfig sourceConfig, List<String> tableNames, String jobId) throws Exception {
         Path jobDir = Path.of(csvBaseDir, jobId);
         Files.createDirectories(jobDir);
 
         DataSource ds = null;
         try {
-            ds = DataSourceConfig.createOracleDataSource(
-                    sourceConfig.toJdbcUrl(),
-                    sourceConfig.getUsername(),
-                    sourceConfig.getPassword());
+            ds = createSourceDataSource(sourceConfig);
             List<ExportResult> results = new ArrayList<>();
             for (String tableName : tableNames) {
                 ExportResult r = exportTable(ds, tableName.trim(), jobDir);
@@ -57,6 +54,19 @@ public class OracleCsvExportService {
                 }
             }
         }
+    }
+
+    private DataSource createSourceDataSource(SourceConfig config) {
+        String t = config.getSourceType() == null ? "" : config.getSourceType().toLowerCase();
+        return switch (t) {
+            case "mysql" -> DataSourceConfig.createMySQLDataSource(
+                    config.toJdbcUrl(), config.getUsername(), config.getPassword());
+            case "postgresql", "postgres" -> DataSourceConfig.createPostgresDataSource(
+                    config.toJdbcUrl(), config.getUsername(), config.getPassword());
+            case "oracle" -> DataSourceConfig.createOracleDataSource(
+                    config.toJdbcUrl(), config.getUsername(), config.getPassword());
+            default -> throw new IllegalArgumentException("不支持的 sourceType: " + config.getSourceType());
+        };
     }
 
     private ExportResult exportTable(DataSource ds, String tableName, Path jobDir) throws SQLException, IOException {

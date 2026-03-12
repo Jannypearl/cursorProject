@@ -1,17 +1,17 @@
 # 数据迁移服务 (Data Migration)
 
-基于 **Spring Boot 3** 的后端服务：应用自身使用 **MySQL** 存储迁移任务与状态，支持从 **Oracle** 将表数据导出为 CSV，再导入到 **TDSQL-MySQL** 或 **TDSQL-PG**。
+基于 **Spring Boot 3** 的后端服务：应用自身使用 **MySQL** 存储迁移任务与状态，支持从 **Oracle / MySQL / PostgreSQL** 将表数据导出为 CSV，再导入到 **TDSQL-MySQL** 或 **TDSQL-PG**。
 
 ## 迁移流程
 
-1. **导出**：连接源库 Oracle，将指定表的数据查询并写入 CSV 文件（UTF-8）。
+1. **导出**：连接源库（Oracle/MySQL/PostgreSQL），将指定表的数据查询并写入 CSV 文件（UTF-8）。
 2. **导入**：读取 CSV 文件，通过 JDBC 批量插入到已配置的 TDSQL（MySQL 或 PostgreSQL）目标库。
 
 ## 技术栈
 
 - Java 17、Spring Boot 3.2.x
 - 应用库：MySQL + JPA
-- 源库：Oracle（ojdbc11）
+- 源库：Oracle（ojdbc11）/ MySQL（mysql-connector-j）/ PostgreSQL（postgresql）
 - 目标库：TDSQL-MySQL（mysql-connector-j）、TDSQL-PG（postgresql）
 
 ## 配置说明
@@ -53,6 +53,7 @@ Content-Type: application/json
 {
   "jobName": "my-first-migration",
   "source": {
+    "sourceType": "oracle",
     "host": "oracle-host",
     "port": 1521,
     "serviceNameOrSid": "ORCL",
@@ -69,6 +70,31 @@ Content-Type: application/json
     "password": "secret"
   },
   "tableNames": ["USER_INFO", "ORDER_MAIN"]
+}
+```
+
+请求体示例（MySQL → TDSQL-PG）：
+
+```json
+{
+  "jobName": "mysql-to-tdsqlpg",
+  "source": {
+    "sourceType": "mysql",
+    "host": "mysql-host",
+    "port": 3306,
+    "database": "sourcedb",
+    "username": "root",
+    "password": "rootpwd"
+  },
+  "target": {
+    "targetType": "tdsql_pg",
+    "host": "tdsql-pg-host",
+    "port": 5432,
+    "database": "targetdb",
+    "username": "pguser",
+    "password": "pgpwd"
+  },
+  "tableNames": ["user_info"]
 }
 ```
 
@@ -112,7 +138,8 @@ java -jar target/data-migration-1.0.0-SNAPSHOT.jar
 
 ## 使用注意
 
-- **Oracle 连接**：`useSid: true` 时使用 SID 连接；`false` 时使用服务名（推荐）。
+- **Oracle 连接**：`source.sourceType=oracle` 时，`useSid: true` 使用 SID；`false` 使用服务名（推荐）。
+- **MySQL/PostgreSQL 源库**：`source.sourceType=mysql/postgresql` 时请填写 `database`。
 - **目标表**：导入前请在 TDSQL 中预先创建好与源表结构一致（或兼容）的表，本服务只做数据插入，不自动建表。
 - **CSV 编码**：导出与解析均使用 UTF-8；若源库有特殊字符，请保证 Oracle 端字符集与导出一致。
 - **大批量**：单表数据量极大时，可考虑按表分批提交多个任务，或后续扩展分页导出/导入。

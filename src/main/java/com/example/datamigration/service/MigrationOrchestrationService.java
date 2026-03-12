@@ -1,7 +1,7 @@
 package com.example.datamigration.service;
 
 import com.example.datamigration.dto.MigrationRequest;
-import com.example.datamigration.dto.OracleSourceConfig;
+import com.example.datamigration.dto.SourceConfig;
 import com.example.datamigration.dto.TdsqlTargetConfig;
 import com.example.datamigration.entity.MigrationJob;
 import com.example.datamigration.repository.MigrationJobRepository;
@@ -52,7 +52,7 @@ public class MigrationOrchestrationService {
     @Transactional
     public void runMigrationAsync(Long jobId, MigrationRequest request) {
         List<String> tables = request.getTableNames();
-        OracleSourceConfig source = request.getSource();
+        SourceConfig source = request.getSource();
         TdsqlTargetConfig target = request.getTarget();
         String jobIdStr = String.valueOf(jobId);
 
