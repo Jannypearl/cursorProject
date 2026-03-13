@@ -50,7 +50,7 @@ public class OracleCsvExportService {
                 try {
                     c.close();
                 } catch (Exception e) {
-                    log.warn("关闭 Oracle 数据源异常", e);
+                    log.warn("关闭源库数据源异常", e);
                 }
             }
         }

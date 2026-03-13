@@ -48,7 +48,7 @@ public class TdsqlCsvImportService {
                 try {
                     c.close();
                 } catch (Exception e) {
-                    log.warn("关闭 TDSQL 数据源异常", e);
+                    log.warn("关闭目标库数据源异常", e);
                 }
             }
         }

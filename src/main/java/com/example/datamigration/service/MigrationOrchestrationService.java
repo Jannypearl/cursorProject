@@ -62,7 +62,7 @@ public class MigrationOrchestrationService {
         String jobIdStr = String.valueOf(jobId);
 
         try {
-            updateJob(jobId, "EXPORTING", "正在从 Oracle 导出表到 CSV...", null);
+            updateJob(jobId, "EXPORTING", "正在从源库导出表到 CSV...", null);
 
             List<ExportResult> exportResults = exportService.exportToCsv(source, tables, jobIdStr);
             String exportStats = exportResults.stream()
@@ -70,7 +70,7 @@ public class MigrationOrchestrationService {
                     .collect(Collectors.joining("; "));
             updateJob(jobId, "EXPORTING", "导出完成", exportStats);
 
-            updateJob(jobId, "IMPORTING", "正在将 CSV 导入 TDSQL...", null);
+            updateJob(jobId, "IMPORTING", "正在将 CSV 导入 目标库...", null);
             List<ImportResult> importResults = importService.importFromCsv(target, exportResults);
             String importStats = importResults.stream()
                     .map(i -> i.getTableName() + ":" + i.getRowCount())

@@ -8,3 +8,4 @@ target/
 .mvnw.sh
 .mvnw.bat
 .mvnw.sh
+migration-csv/
