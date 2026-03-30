@@ -36,7 +36,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/pom.xml" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../Projects/SmartResumeAssistant/pom.xml" />
   </component>
   <component name="RunManager">
     <configuration name="DataMigrationApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
@@ -58,6 +58,7 @@
       <workItem from="1773111798708" duration="895000" />
       <workItem from="1773112722619" duration="2204000" />
       <workItem from="1773194593073" duration="597000" />
+      <workItem from="1773392708244" duration="49000" />
     </task>
     <task id="LOCAL-00001" summary="修复if语句没有大括号的问题">
       <created>1773112773864</created>

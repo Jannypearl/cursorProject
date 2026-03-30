@@ -1,0 +1,29 @@
+---
+description: Spring Boot 后端开发规范（分层、校验、异常、日志）
+alwaysApply: true
+---
+
+# Spring Boot Conventions
+
+适用于本项目的 Spring Boot 后端开发规范，所有改动默认遵循：
+
+1. 分层职责清晰：`controller` 仅做参数接收和响应；业务逻辑放 `service`；数据库访问放 `repository`。
+2. 接口入参必须使用 Bean Validation（如 `@Valid`、`@NotNull`、`@NotBlank`），校验失败应返回 400。
+3. 不要在业务代码中硬编码关键业务值；配置项应放入 `application.yml` 或环境变量。
+4. 数据库写操作要保证事务完整性；批处理失败时必须显式回滚，避免部分提交。
+5. 异常处理要可观测：记录必要上下文（任务 ID、表名、数据源类型），并保留原始异常栈。
+6. 日志优先使用 `log.info/warn/error`，避免使用 `System.out.println` 作为正式日志手段。
+7. 新增功能需同步更新 `README.md`（配置项、请求示例、运行说明）。
+8. 保持代码可维护：命名语义化、避免重复逻辑、复杂分支提取私有方法。
+
+## 示例
+
+```java
+@PostMapping("/run")
+public ResponseEntity<MigrationJob> run(@Valid @RequestBody MigrationRequest request) {
+    MigrationJob job = orchestrationService.createJob(request);
+    orchestrationService.runMigrationAsync(job.getId(), request);
+    return ResponseEntity.accepted().body(job);
+}
+```
+
